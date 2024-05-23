@@ -49,6 +49,7 @@ public class CityClient {
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 12345);
                 socket.send(sendPacket);
 
+                //handle byte a
                 byte[] buffer = new byte[1024];
                 DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
                 socket.receive(receivePacket);
