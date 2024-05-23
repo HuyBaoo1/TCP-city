@@ -34,6 +34,8 @@ public class CityServer {
                 socket.send(responsePacket);
             }
         } catch (IOException | ClassNotFoundException e) {
+            //print the stack trace of a throwable object
+            //throwable is the superclass of all exceptions and errors in Java
             e.printStackTrace();
         }
     }
