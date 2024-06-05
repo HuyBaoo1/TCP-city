@@ -1,27 +1,27 @@
 package main;
 
 import java.io.*;
+import java.util.Map;
 import java.net.*;
+import java.util.HashMap;
 
 public class CityServer {
-    private static City city = new City("Berlin");
+    private static Map<String, City> cities = new HashMap<>();
 
     public static void main(String[] args) {
+    	cities.put("Frankfurt",new City("Frankfurt"));
+    	cities.put("Berlin",new City("Berlin"));
     	//create socket with port 12345
-        try (DatagramSocket socket = new DatagramSocket(12345)) {
-        	//create buffer used to store data of received UDP packet
+        try (DatagramSocket socket = new DatagramSocket(3344)) {
             byte[] buffer = new byte[1024];
-            //main loop for receiving and processing packets
+            
             while (true) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
-                //deserialization of received data
                 ByteArrayInputStream bais = new ByteArrayInputStream(packet.getData());
                 ObjectInputStream ois = new ObjectInputStream(bais);
-                //read and deserializes the object from the stream
                 Message message = (Message) ois.readObject();
                 
-                //handle the messagae
                 Object result = handleMessage(message);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -34,13 +34,18 @@ public class CityServer {
                 socket.send(responsePacket);
             }
         } catch (IOException | ClassNotFoundException e) {
-            //print the stack trace of a throwable object
-            //throwable is the superclass of all exceptions and errors in Java
+
             e.printStackTrace();
         }
     }
-
+    //Check the city's name
     private static Object handleMessage(Message message) {
+    	String cityName = message.getcityName();
+    	City city = cities.get(cityName);
+    	if(city == null) {
+    		return "City not found in our map";
+    	}
+    	
         String methodName = message.getMethodName();
         Object[] params = message.getParameters();
 
