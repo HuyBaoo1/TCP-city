@@ -13,6 +13,8 @@ public class CityClient {
             InetAddress address = InetAddress.getByName("localhost");
 
             while (true) {
+                System.out.println("Choose a city: Frankfurt oder Berlin");
+                String cityName = scanner.nextLine();
                 System.out.println("Choose method: 1 - Add Inhabitant, 2 - Get All Dates of Birth, 3 - Get Marital Status");
                 int choice = scanner.nextInt();
                 scanner.nextLine(); // Consume newline
@@ -27,14 +29,17 @@ public class CityClient {
                     String MS = scanner.nextLine();
 
                     message = new Message("addInhabitant", name, DoB, MS);
+                    message.setCityName(cityName);
 
                 } else if (choice == 2) {
                     message = new Message("getAllDoBs");
+                    message.setCityName(cityName);
 
                 } else if (choice == 3) {
                     System.out.println("Enter name: ");
                     String name = scanner.nextLine();
                     message = new Message("getMaritalStatus", name);
+                    message.setCityName(cityName);
 
                 } else {
                     System.out.println("Invalid choice");
@@ -46,10 +51,10 @@ public class CityClient {
                 oos.writeObject(message);
                 byte[] sendData = baos.toByteArray();
 
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 12345);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3344);
                 socket.send(sendPacket);
 
-                //handle byte a
+                // Handle response
                 byte[] buffer = new byte[1024];
                 DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
                 socket.receive(receivePacket);
@@ -60,9 +65,9 @@ public class CityClient {
 
                 if (response instanceof Set) {
                     Set<String> dobs = (Set<String>) response;
-                    System.out.println("Dates of Birth: " + dobs);
+                    System.out.println("Dates of Birth in " + cityName + ": " + dobs);
                 } else {
-                    System.out.println("Response: " + response);
+                    System.out.println("Response from " + cityName + ": " + response);
                 }
             }
 
