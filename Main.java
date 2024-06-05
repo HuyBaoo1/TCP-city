@@ -33,7 +33,7 @@ class Inhabitants implements Serializable {
 class City implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
-    private Set<Inhabitants> inhabitants;
+    	private Set<Inhabitants> inhabitants;
     
     public City(String name) {
     	this.name = name;
