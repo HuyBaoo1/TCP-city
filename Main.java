@@ -28,20 +28,18 @@ class Inhabitants implements Serializable {
 	 public void setMaritalStatus(String MS) {
 	        this.MS = MS;
 	    }
+
 }
-//convert class City into a byte stream
+
 class City implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
-    	private Set<Inhabitants> inhabitants;
-    	//declares a field 'inhabitants' which will hold a set of 'Inhabitants' obj
-
-//Constructor
+    private Set<Inhabitants> inhabitants;
+    
     public City(String name) {
     	this.name = name;
     	this.inhabitants = new HashSet<>();
     }
-//Search inhabitants method
     public Inhabitants searchInhabitant(String name) {
         for (Inhabitants inhabitant : inhabitants) {
             if (inhabitant.getName().equals(name)) {
@@ -80,6 +78,7 @@ class City implements Serializable {
     }
 }
 
+
 public class Main implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -91,7 +90,7 @@ public class Main implements Serializable {
         city.addInhabitant("Michael Jordan", "1978", "Married");
 
     
-        Inhabitants huy = city.searchInhabitant("Huy Bao");
+        Inhabitants huy = city.searchInhabitant("HuyBao");
         if (huy != null) {
             huy.setMaritalStatus("Single");
         }
@@ -99,8 +98,6 @@ public class Main implements Serializable {
        
         int unmarriedCount = 0;
         for (Inhabitants inhabitant : city.getAllInhabitants()) {
-	//equals is to compares the content of two strings
-	//if the inhabitant's MS is single then it counts
             if (inhabitant.getMS().equals("Single")) {
                 unmarriedCount++;
             }
